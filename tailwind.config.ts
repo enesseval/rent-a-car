@@ -66,11 +66,16 @@ const config = {
                "0%": { transform: "rotate(0deg)", scale: "0" },
                "100%": { transform: "rotate(360deg)", scale: "1" },
             },
+            turnToggle: {
+               "0%": { transform: "rotate(0deg)" },
+               "100%": { transform: "rotate(180deg)" },
+            },
          },
          animation: {
             "accordion-down": "accordion-down 0.2s ease-out",
             "accordion-up": "accordion-up 0.2s ease-out",
             wiggle: "wiggle 1s ease-in-out",
+            turnToggle: "turnToggle 1s forward",
          },
       },
    },
