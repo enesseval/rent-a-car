@@ -15,7 +15,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 setPersistence(auth, browserSessionPersistence)
-   .then(() => console.log("Persistence set to session"))
+   .then()
    .catch((e) => console.log("Error setting persistence: ", e));
 
 export { auth };

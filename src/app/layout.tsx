@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { Provider } from "./graphql/provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,9 @@ export default async function RootLayout({
          <body className={inter.className}>
             <NextIntlClientProvider messages={messages}>
                <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                  {/* Burada ApolloProvider yerine yeni bir dosyada prodiver oluşturulma sebebi apollonun client side da çalışmak istemesinden kaynaklı */}
                   <Provider>{children}</Provider>
+                  <Toaster />
                </ThemeProvider>
             </NextIntlClientProvider>
          </body>

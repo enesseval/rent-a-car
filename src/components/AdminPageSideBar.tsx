@@ -3,12 +3,12 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import ThemeSwitcher from "./ThemeSwitcher";
-import { MdOutlineLogout } from "react-icons/md";
 import { signOut } from "firebase/auth";
 import { auth } from "@/services/firebaseConfig";
 import { useRouter } from "next/navigation";
 import { Separator } from "./ui/separator";
 import { GoDotFill } from "react-icons/go";
+import { CiLogout } from "react-icons/ci";
 
 interface Props {
    isOpen: boolean;
@@ -43,7 +43,7 @@ const AdminPageSideBar: React.FC<Props> = ({ isOpen, toggleSidebar, setActiveTab
          <div className={cn("absolute bottom-2 flex justify-evenly w-full delay-300", !isOpen && "invisible delay-0")}>
             <ThemeSwitcher />
             <Button className="z-10" size={"icon"} variant={"outline"} onClick={() => handleSignout()}>
-               <MdOutlineLogout className="w-6 h-6" />
+               <CiLogout className="w-6 h-6" />
             </Button>
          </div>
          <Separator className={!isOpen ? "invisible" : ""} />
