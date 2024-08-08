@@ -55,11 +55,11 @@ const AdminPageSideBar: React.FC<Props> = ({ isOpen, toggleSidebar, setActiveTab
                </li>
                <li onClick={() => setActiveTab("brands")} className="hover:text-slate-600 cursor-pointer inline-flex items-center">
                   <GoDotFill className="mr-2" />
-                  Brands
+                  Markalar
                </li>
                <li onClick={() => setActiveTab("models")} className="hover:text-slate-600 cursor-pointer inline-flex items-center">
                   <GoDotFill className="mr-2" />
-                  Models
+                  Modeller
                </li>
                <li onClick={() => setActiveTab("categories")} className="hover:text-slate-600 cursor-pointer inline-flex items-center">
                   <GoDotFill className="mr-2" />

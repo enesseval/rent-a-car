@@ -1,6 +1,7 @@
 "use client";
 import AdminPageSideBar from "@/components/AdminPageSideBar";
 import Brands from "@/components/Brands";
+import Models from "@/components/Models";
 import { cn } from "@/lib/utils";
 import { auth } from "@/services/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
@@ -30,7 +31,7 @@ const AdminPage: React.FC = () => {
          case "brands":
             return <Brands />;
          case "models":
-            return <div>models</div>;
+            return <Models />;
          case "categories":
             return <div>categories</div>;
          case "reservations":

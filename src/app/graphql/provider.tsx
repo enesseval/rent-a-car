@@ -59,6 +59,11 @@ export const Provider = ({ children }: { children: ReactNode }) => {
                         return [...existing, ...incomming];
                      },
                   },
+                  models: {
+                     merge(existing = [], incomming: any[]) {
+                        return [...existing, ...incomming];
+                     },
+                  },
                },
             },
          },

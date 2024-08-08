@@ -2,8 +2,12 @@ import { nanoid } from "nanoid";
 import React, { useState } from "react";
 import { TiDelete } from "react-icons/ti";
 import { MdModeEdit } from "react-icons/md";
-import { useMutation, useSubscription } from "@apollo/client";
+import { useMutation, useQuery, useSubscription } from "@apollo/client";
 
+import Loading from "./Loading";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 import {
    AlertDialog,
    AlertDialogAction,
@@ -15,68 +19,73 @@ import {
    AlertDialogTitle,
    AlertDialogTrigger,
 } from "./ui/alert-dialog";
-import Loading from "./Loading";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
-import { Brand } from "@/types/graphqlTypes";
+import { Brand, Model } from "@/types/graphqlTypes";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { ADD_BRAND_MUTATION, BRANDS_SUBSCRIPTIONS, DELETE_BRAND, UPDATE_BRAND_MUTATION } from "@/graphql/queries";
+import { ADD_MODEL_MUTATION, DELETE_MODEL, GET_BRANDS, MODELS_SUBSCRIPTION, UPDATE_MODEL_MUTATION } from "@/graphql/queries";
 
-function Brands() {
+function Models() {
    const { toast } = useToast();
-   const [brand, setBrand] = useState("");
    const [open, setOpen] = useState(false);
-   const [editing, setEditing] = useState<Brand | null>(null);
-   const { data, loading, error } = useSubscription(BRANDS_SUBSCRIPTIONS);
-   const [addBrand] = useMutation(ADD_BRAND_MUTATION, {
+   const [model, setModel] = useState("");
+   const [brand, setBrand] = useState("");
+   const [modelInputError, setModelInputError] = useState("");
+   const [editing, setEditing] = useState<Model | null>(null);
+
+   const { data: brandData } = useQuery(GET_BRANDS);
+   const { data, loading, error } = useSubscription(MODELS_SUBSCRIPTION);
+   const [addModel] = useMutation(ADD_MODEL_MUTATION, {
       onCompleted: () => {
          toast({
-            title: "Marka başarıyla eklendi",
+            title: "Model başarıyla eklendi",
          });
+         setModel("");
          setBrand("");
          setOpen(false);
          setEditing(null);
       },
       onError: (error) => {
          toast({
-            title: "Marka eklenirken bir hata oluştu",
+            title: "Model eklenirken bir hata oluştu",
             description: error.message,
             variant: "destructive",
          });
       },
    });
-   const [updateBrand] = useMutation(UPDATE_BRAND_MUTATION, {
+   const [updateModel] = useMutation(UPDATE_MODEL_MUTATION, {
       onCompleted: () => {
          toast({
-            title: "Marka başarıyla güncellendi",
+            title: "Model başarıyla güncellendi",
          });
+         setModel("");
          setBrand("");
          setOpen(false);
          setEditing(null);
       },
       onError: (error) => {
          toast({
-            title: "Marka güncellenirken bir hata oluştu",
+            title: "Model güncellenirken bir hata oluştu",
             description: error.message,
             variant: "destructive",
          });
       },
    });
-   const [deleteBrand] = useMutation(DELETE_BRAND, {
+
+   const [deleteModel] = useMutation(DELETE_MODEL, {
       onCompleted: () => {
          toast({
-            title: "Marka başarıyla silindi",
+            title: "Model başarıyla silindi",
          });
+         setModel("");
          setBrand("");
          setOpen(false);
          setEditing(null);
       },
       onError: (error) => {
          toast({
-            title: "Marka silinirken bir hata oluştu",
+            title: "Model silinirken bir hata oluştu",
             description: error.message,
             variant: "destructive",
          });
@@ -84,27 +93,34 @@ function Brands() {
    });
 
    const handleSubmit = () => {
-      if (editing) updateBrand({ variables: { id: editing.id, name: brand } });
-      else addBrand({ variables: { id: nanoid(), name: brand } });
+      if (model.trim() === "") {
+         setModelInputError("Bu alanı doldurmalısınız.");
+         return;
+      }
+      if (editing) updateModel({ variables: { id: editing.id, name: model, brand_id: brand } });
+      else addModel({ variables: { id: nanoid(), name: model, brand_id: brand } });
 
       setBrand("");
-      setOpen(false);
+      setModel("");
       setEditing(null);
+      setOpen(false);
    };
 
-   const handleBrandEdit = (brand: Brand) => {
-      setBrand(brand.name);
-      setEditing(brand);
+   const handleModelEdit = (model: Model) => {
+      setModel(model.name);
+      setBrand(model.brand.id);
+      setEditing(model);
       setOpen(true);
    };
 
    const handleDialogClose = () => {
+      setModel("");
       setBrand("");
       setEditing(null);
    };
 
    const handleBrandDelete = (id: string) => {
-      deleteBrand({ variables: { id } });
+      deleteModel({ variables: { id } });
    };
 
    if (loading) return <Loading />;
@@ -121,19 +137,40 @@ function Brands() {
             >
                <DialogTrigger asChild>
                   <Button onClick={() => setEditing(null)} variant={"outline"}>
-                     Marka Ekle
+                     Model Ekle
                   </Button>
                </DialogTrigger>
                <DialogContent aria-describedby={undefined} className="max-w-[350px]">
                   <DialogHeader>
-                     <DialogTitle>Bir araç markası ekle</DialogTitle>
+                     <DialogTitle>{editing ? "Düzenle" : "Bir araç modeli ekle"}</DialogTitle>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
                      <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="brand" className="text-right">
+                        <Label htmlFor="brandSelect" className="text-right">
                            Marka
                         </Label>
-                        <Input id="brand" value={brand} onChange={(e) => setBrand(e.target.value)} className="col-span-3" />
+                        <Select defaultValue={brand} onValueChange={(value) => setBrand(value)}>
+                           <SelectTrigger className="w-[221px]" id="brandSelect">
+                              <SelectValue placeholder="Bir marka seçiniz" />
+                           </SelectTrigger>
+                           <SelectContent>
+                              <SelectGroup>
+                                 {brandData &&
+                                    brandData.brands.map((brand: Brand) => (
+                                       <SelectItem key={brand.id} value={brand.id}>
+                                          {brand.name}
+                                       </SelectItem>
+                                    ))}
+                              </SelectGroup>
+                           </SelectContent>
+                        </Select>
+                     </div>
+                     <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="brand" className="text-right">
+                           Model
+                        </Label>
+                        <Input required id="brand" value={model} onChange={(e) => setModel(e.target.value)} className="col-span-3" />
+                        {modelInputError && <p className="col-span-4 text-red-500">{modelInputError}</p>}
                      </div>
                   </div>
                   <DialogFooter className="w-full flex flex-col items-end">
@@ -144,23 +181,24 @@ function Brands() {
                </DialogContent>
             </Dialog>
          </div>
-
          {!loading && !error && (
             <Table className="mt-20 max-w-[600px] mx-auto">
                <TableHeader>
                   <TableRow>
-                     <TableHead>Markalar</TableHead>
+                     <TableHead>Model</TableHead>
+                     <TableHead>Marka</TableHead>
                   </TableRow>
                </TableHeader>
                <TableBody>
                   {data &&
-                     data.brands.map((brand: Brand) => (
-                        <TableRow key={brand.id}>
-                           <TableCell className="flex items-center">{brand.name}</TableCell>
+                     data.models.map((model: Model) => (
+                        <TableRow key={model.id}>
+                           <TableCell>{model.name}</TableCell>
+                           <TableCell>{model.brand.name}</TableCell>
                            <TableCell className="text-right">
                               <div className="flex justify-end space-x-2">
                                  <div>
-                                    <Button onClick={() => handleBrandEdit(brand)} className="ml-2" size={"icon"} variant={"outline"}>
+                                    <Button onClick={() => handleModelEdit(model)} className="ml-2" size={"icon"} variant={"outline"}>
                                        <MdModeEdit className="w-4 h-4" />
                                     </Button>
                                  </div>
@@ -173,12 +211,12 @@ function Brands() {
                                        </AlertDialogTrigger>
                                        <AlertDialogContent>
                                           <AlertDialogHeader>
-                                             <AlertDialogTitle>Bu markayı silmek istediğinize emin misiniz?</AlertDialogTitle>
+                                             <AlertDialogTitle>Bu modeli silmek istediğinize emin misiniz?</AlertDialogTitle>
                                              <AlertDialogDescription>Bu işlem geri alınamaz yine de devam etmek istiyor musunuz?</AlertDialogDescription>
                                           </AlertDialogHeader>
                                           <AlertDialogFooter>
                                              <AlertDialogCancel>Hayır</AlertDialogCancel>
-                                             <AlertDialogAction onClick={() => handleBrandDelete(brand.id)}>Evet</AlertDialogAction>
+                                             <AlertDialogAction onClick={() => handleBrandDelete(model.id)}>Evet</AlertDialogAction>
                                           </AlertDialogFooter>
                                        </AlertDialogContent>
                                     </AlertDialog>
@@ -194,4 +232,4 @@ function Brands() {
    );
 }
 
-export default Brands;
+export default Models;
