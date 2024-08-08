@@ -1,9 +1,17 @@
-import { nanoid } from "nanoid";
+import { Category } from "@/types/graphqlTypes";
 import React, { useState } from "react";
+import { Dialog, DialogTitle, DialogContent, DialogHeader, DialogTrigger, DialogFooter } from "./ui/dialog";
+import { Button } from "./ui/button";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { useMutation, useSubscription } from "@apollo/client";
+import { ADD_CATEGORY_MUTATION, CATEGORY_SUBSCRIPTION, DELETE_CATEGORY, UPDATE_CATEGORY_MUTATION } from "@/graphql/queries";
+import { nanoid } from "nanoid";
+import { useToast } from "./ui/use-toast";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { TiDelete } from "react-icons/ti";
 import { MdModeEdit } from "react-icons/md";
-import { useMutation, useSubscription } from "@apollo/client";
-
+import Loading from "./Loading";
 import {
    AlertDialog,
    AlertDialogAction,
@@ -15,69 +23,61 @@ import {
    AlertDialogTitle,
    AlertDialogTrigger,
 } from "./ui/alert-dialog";
-import Loading from "./Loading";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
-import { Brand } from "@/types/graphqlTypes";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { ADD_BRAND_MUTATION, BRANDS_SUBSCRIPTIONS, DELETE_BRAND, UPDATE_BRAND_MUTATION } from "@/graphql/queries";
 
-function Brands() {
+function Categories() {
    const { toast } = useToast();
-   const [brand, setBrand] = useState("");
    const [open, setOpen] = useState(false);
-   const [brandSubmitError, setBrandSubmitError] = useState("");
-   const [editing, setEditing] = useState<Brand | null>(null);
-   const { data, loading, error } = useSubscription(BRANDS_SUBSCRIPTIONS);
-   const [addBrand] = useMutation(ADD_BRAND_MUTATION, {
+   const [category, setCategory] = useState("");
+   const [editing, setEditing] = useState<Category | null>(null);
+   const [categorySubmitError, setCategorySubmitError] = useState("");
+
+   const { data, loading, error } = useSubscription(CATEGORY_SUBSCRIPTION);
+   const [addCategory] = useMutation(ADD_CATEGORY_MUTATION, {
       onCompleted: () => {
          toast({
-            title: "Marka başarıyla eklendi",
+            title: "Kategori başarıyla eklendi",
          });
-         setBrand("");
+         setCategory("");
          setOpen(false);
          setEditing(null);
       },
       onError: (error) => {
          toast({
-            title: "Marka eklenirken bir hata oluştu",
+            title: "Kategori eklenirken bir hata oluştu",
             description: error.message,
             variant: "destructive",
          });
       },
    });
-   const [updateBrand] = useMutation(UPDATE_BRAND_MUTATION, {
+   const [updateCategory] = useMutation(UPDATE_CATEGORY_MUTATION, {
       onCompleted: () => {
          toast({
-            title: "Marka başarıyla güncellendi",
+            title: "Kategori başarıyla güncellendi",
          });
-         setBrand("");
+         setCategory("");
          setOpen(false);
          setEditing(null);
       },
       onError: (error) => {
          toast({
-            title: "Marka güncellenirken bir hata oluştu",
+            title: "Kategori güncellenirken bir hata oluştu",
             description: error.message,
             variant: "destructive",
          });
       },
    });
-   const [deleteBrand] = useMutation(DELETE_BRAND, {
+   const [deleteCategory] = useMutation(DELETE_CATEGORY, {
       onCompleted: () => {
          toast({
-            title: "Marka başarıyla silindi",
+            title: "Kategori başarıyla silindi",
          });
-         setBrand("");
+         setCategory("");
          setOpen(false);
          setEditing(null);
       },
       onError: (error) => {
          toast({
-            title: "Marka silinirken bir hata oluştu",
+            title: "Kategori silinirken bir hata oluştu",
             description: error.message,
             variant: "destructive",
          });
@@ -85,31 +85,28 @@ function Brands() {
    });
 
    const handleSubmit = () => {
-      if (brand.trim() === "") {
-         setBrandSubmitError("Bu alan zorunludur.");
+      if (category.trim() === "") {
+         setCategorySubmitError("Bu alan zorunludur.");
          return;
       }
-      if (editing) updateBrand({ variables: { id: editing.id, name: brand } });
-      else addBrand({ variables: { id: nanoid(), name: brand } });
 
-      setBrand("");
-      setOpen(false);
-      setEditing(null);
+      if (editing) updateCategory({ variables: { id: editing.id, name: category } });
+      else addCategory({ variables: { id: nanoid(), name: category } });
    };
 
-   const handleBrandEdit = (brand: Brand) => {
-      setBrand(brand.name);
-      setEditing(brand);
+   const handleCategoryEdit = (category: Category) => {
+      setCategory(category.name);
+      setEditing(category);
       setOpen(true);
    };
 
    const handleDialogClose = () => {
-      setBrand("");
+      setCategory("");
       setEditing(null);
    };
 
-   const handleBrandDelete = (id: string) => {
-      deleteBrand({ variables: { id } });
+   const handleDeleteCategory = (id: string) => {
+      deleteCategory({ variables: { id } });
    };
 
    if (loading) return <Loading />;
@@ -126,7 +123,7 @@ function Brands() {
             >
                <DialogTrigger asChild>
                   <Button onClick={() => setEditing(null)} variant={"outline"}>
-                     Marka Ekle
+                     Kategori Ekle
                   </Button>
                </DialogTrigger>
                <DialogContent aria-describedby={undefined} className="max-w-[350px]">
@@ -136,10 +133,10 @@ function Brands() {
                   <div className="grid gap-4 py-4">
                      <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="brand" className="text-right">
-                           Marka
+                           Kategori
                         </Label>
-                        <Input id="brand" value={brand} onChange={(e) => setBrand(e.target.value)} className="col-span-3" />
-                        {brandSubmitError && <p className="col-span-4 text-red-500">{brandSubmitError}</p>}
+                        <Input id="brand" value={category} onChange={(e) => setCategory(e.target.value)} className="col-span-3" />
+                        {categorySubmitError && <p className="col-span-4 text-red-500">{categorySubmitError}</p>}
                      </div>
                   </div>
                   <DialogFooter className="w-full flex flex-col items-end">
@@ -150,23 +147,22 @@ function Brands() {
                </DialogContent>
             </Dialog>
          </div>
-
          {!loading && !error && (
             <Table className="mt-20 max-w-[600px] mx-auto">
                <TableHeader>
                   <TableRow>
-                     <TableHead>Markalar</TableHead>
+                     <TableHead>Kategori</TableHead>
                   </TableRow>
                </TableHeader>
                <TableBody>
                   {data &&
-                     data.brands.map((brand: Brand) => (
-                        <TableRow key={brand.id}>
-                           <TableCell className="flex items-center">{brand.name}</TableCell>
+                     data.categories.map((category: Category) => (
+                        <TableRow key={category.id}>
+                           <TableCell>{category.name}</TableCell>
                            <TableCell className="text-right">
                               <div className="flex justify-end">
                                  <div>
-                                    <Button onClick={() => handleBrandEdit(brand)} className="ml-2" size={"icon"} variant={"outline"}>
+                                    <Button onClick={() => handleCategoryEdit(category)} className="ml-2" size={"icon"} variant={"outline"}>
                                        <MdModeEdit className="w-4 h-4" />
                                     </Button>
                                  </div>
@@ -179,12 +175,12 @@ function Brands() {
                                        </AlertDialogTrigger>
                                        <AlertDialogContent>
                                           <AlertDialogHeader>
-                                             <AlertDialogTitle>Bu markayı silmek istediğinize emin misiniz?</AlertDialogTitle>
+                                             <AlertDialogTitle>Bu kategoriyi silmek istediğinize emin misiniz?</AlertDialogTitle>
                                              <AlertDialogDescription>Bu işlem geri alınamaz yine de devam etmek istiyor musunuz?</AlertDialogDescription>
                                           </AlertDialogHeader>
                                           <AlertDialogFooter>
                                              <AlertDialogCancel>Hayır</AlertDialogCancel>
-                                             <AlertDialogAction onClick={() => handleBrandDelete(brand.id)}>Evet</AlertDialogAction>
+                                             <AlertDialogAction onClick={() => handleDeleteCategory(category.id)}>Evet</AlertDialogAction>
                                           </AlertDialogFooter>
                                        </AlertDialogContent>
                                     </AlertDialog>
@@ -200,4 +196,4 @@ function Brands() {
    );
 }
 
-export default Brands;
+export default Categories;

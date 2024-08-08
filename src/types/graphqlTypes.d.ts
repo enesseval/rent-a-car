@@ -8,3 +8,8 @@ export interface Model {
    name: string;
    brand: Brand;
 }
+
+export interface Category {
+   id: string;
+   name: string;
+}

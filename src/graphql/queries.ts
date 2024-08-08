@@ -80,3 +80,37 @@ export const DELETE_MODEL = gql`
       }
    }
 `;
+
+// CATEGORIES
+export const ADD_CATEGORY_MUTATION = gql`
+   mutation addCategory($id: String, $name: String) {
+      insert_categories_one(object: { id: $id, name: $name }) {
+         id
+      }
+   }
+`;
+
+export const CATEGORY_SUBSCRIPTION = gql`
+   subscription getCategories {
+      categories {
+         id
+         name
+      }
+   }
+`;
+
+export const UPDATE_CATEGORY_MUTATION = gql`
+   mutation updateCategory($id: String!, $name: String!) {
+      update_categories_by_pk(pk_columns: { id: $id }, _set: { name: $name }) {
+         id
+      }
+   }
+`;
+
+export const DELETE_CATEGORY = gql`
+   mutation deleteCategory($id: String!) {
+      delete_categories_by_pk(id: $id) {
+         id
+      }
+   }
+`;
