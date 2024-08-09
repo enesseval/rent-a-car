@@ -5,6 +5,7 @@ import { MdModeEdit } from "react-icons/md";
 import { useMutation, useSubscription } from "@apollo/client";
 
 import Loading from "./Loading";
+import { cn } from "@/lib/utils";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -169,8 +170,7 @@ function Models() {
                         <Label htmlFor="model" className="text-right">
                            Model
                         </Label>
-                        <Input required id="model" value={model} onChange={(e) => setModel(e.target.value)} className="col-span-3" />
-                        {modelInputError && <p className="col-span-4 text-red-500">{modelInputError}</p>}
+                        <Input required id="model" value={model} onChange={(e) => setModel(e.target.value)} className={cn("col-span-3", modelInputError && "border-red-500")} />
                      </div>
                   </div>
                   <DialogFooter className="w-full flex flex-col items-end">

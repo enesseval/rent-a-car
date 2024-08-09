@@ -1,17 +1,15 @@
-import { Category } from "@/types/graphqlTypes";
-import React, { useState } from "react";
-import { Dialog, DialogTitle, DialogContent, DialogHeader, DialogTrigger, DialogFooter } from "./ui/dialog";
-import { Button } from "./ui/button";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { useMutation, useSubscription } from "@apollo/client";
-import { ADD_CATEGORY_MUTATION, CATEGORY_SUBSCRIPTION, DELETE_CATEGORY, UPDATE_CATEGORY_MUTATION } from "@/graphql/queries";
 import { nanoid } from "nanoid";
-import { useToast } from "./ui/use-toast";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import React, { useState } from "react";
 import { TiDelete } from "react-icons/ti";
 import { MdModeEdit } from "react-icons/md";
+import { useMutation, useSubscription } from "@apollo/client";
+
 import Loading from "./Loading";
+import { cn } from "@/lib/utils";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { useToast } from "./ui/use-toast";
 import {
    AlertDialog,
    AlertDialogAction,
@@ -23,6 +21,10 @@ import {
    AlertDialogTitle,
    AlertDialogTrigger,
 } from "./ui/alert-dialog";
+import { Category } from "@/types/graphqlTypes";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import { Dialog, DialogTitle, DialogContent, DialogHeader, DialogTrigger, DialogFooter } from "./ui/dialog";
+import { ADD_CATEGORY_MUTATION, CATEGORY_SUBSCRIPTION, DELETE_CATEGORY, UPDATE_CATEGORY_MUTATION } from "@/graphql/queries";
 
 function Categories() {
    const { toast } = useToast();
@@ -135,8 +137,7 @@ function Categories() {
                         <Label htmlFor="brand" className="text-right">
                            Kategori
                         </Label>
-                        <Input id="brand" value={category} onChange={(e) => setCategory(e.target.value)} className="col-span-3" />
-                        {categorySubmitError && <p className="col-span-4 text-red-500">{categorySubmitError}</p>}
+                        <Input id="brand" value={category} onChange={(e) => setCategory(e.target.value)} className={cn("col-span-3", categorySubmitError && "border-red-500")} />
                      </div>
                   </div>
                   <DialogFooter className="w-full flex flex-col items-end">

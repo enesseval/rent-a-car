@@ -16,6 +16,7 @@ import {
    AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import Loading from "./Loading";
+import { cn } from "@/lib/utils";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -138,8 +139,7 @@ function Brands() {
                         <Label htmlFor="brand" className="text-right">
                            Marka
                         </Label>
-                        <Input id="brand" value={brand} onChange={(e) => setBrand(e.target.value)} className="col-span-3" />
-                        {brandSubmitError && <p className="col-span-4 text-red-500">{brandSubmitError}</p>}
+                        <Input id="brand" value={brand} onChange={(e) => setBrand(e.target.value)} className={cn("col-span-3", brandSubmitError && "border-red-500")} />
                      </div>
                   </div>
                   <DialogFooter className="w-full flex flex-col items-end">

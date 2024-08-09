@@ -198,6 +198,34 @@ export const VEHICLE_SUBSCRIPTION = gql`
    }
 `;
 
+export const VEHICLES_BY_DATE_RANGE = gql`
+   subscription getVehiclesByDateRange($from: String!, $to: String!) {
+      vehicles(where: { _or: [{ reservations: { _not: { end_date: { _gte: $from } } } }, { reservations: { _not: { start_date: { _lte: $to } } } }] }) {
+         id
+         fuel
+         gear
+         model_year
+         daily_price
+         description
+         avaliable
+         image
+         plate
+         brand {
+            id
+            name
+         }
+         model {
+            id
+            name
+         }
+         category {
+            id
+            name
+         }
+      }
+   }
+`;
+
 export const UPDATE_VEHICLE_MUTATION = gql`
    mutation updateVehicle(
       $id: String!
@@ -238,6 +266,17 @@ export const DELETE_VEHICLE = gql`
    mutation deleteVehicle($id: String!) {
       delete_vehicles_by_pk(id: $id) {
          id
+      }
+   }
+`;
+
+//RESERVAATIONS
+export const RESERVATIONS_COUNT = gql`
+   subscription reservationCount {
+      reservations_aggregate {
+         aggregate {
+            count
+         }
       }
    }
 `;
