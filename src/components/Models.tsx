@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import React, { useState } from "react";
 import { TiDelete } from "react-icons/ti";
 import { MdModeEdit } from "react-icons/md";
-import { useMutation, useQuery, useSubscription } from "@apollo/client";
+import { useMutation, useSubscription } from "@apollo/client";
 
 import Loading from "./Loading";
 import { Label } from "./ui/label";
@@ -24,7 +24,7 @@ import { Brand, Model } from "@/types/graphqlTypes";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { ADD_MODEL_MUTATION, DELETE_MODEL, GET_BRANDS, MODELS_SUBSCRIPTION, UPDATE_MODEL_MUTATION } from "@/graphql/queries";
+import { ADD_MODEL_MUTATION, BRANDS_SUBSCRIPTIONS, DELETE_MODEL, GET_BRANDS, MODELS_SUBSCRIPTION, UPDATE_MODEL_MUTATION } from "@/graphql/queries";
 
 function Models() {
    const { toast } = useToast();
@@ -34,7 +34,7 @@ function Models() {
    const [modelInputError, setModelInputError] = useState("");
    const [editing, setEditing] = useState<Model | null>(null);
 
-   const { data: brandData } = useQuery(GET_BRANDS);
+   const { data: brandData } = useSubscription(BRANDS_SUBSCRIPTIONS);
    const { data, loading, error } = useSubscription(MODELS_SUBSCRIPTION);
    const [addModel] = useMutation(ADD_MODEL_MUTATION, {
       onCompleted: () => {
@@ -146,11 +146,11 @@ function Models() {
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
                      <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="brandSelect" className="text-right">
+                        <Label htmlFor="brand" className="text-right">
                            Marka
                         </Label>
                         <Select defaultValue={brand} onValueChange={(value) => setBrand(value)}>
-                           <SelectTrigger className="w-[221px]" id="brandSelect">
+                           <SelectTrigger className="col-span-3" id="brand">
                               <SelectValue placeholder="Bir marka seçiniz" />
                            </SelectTrigger>
                            <SelectContent>
@@ -166,10 +166,10 @@ function Models() {
                         </Select>
                      </div>
                      <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="brand" className="text-right">
+                        <Label htmlFor="model" className="text-right">
                            Model
                         </Label>
-                        <Input required id="brand" value={model} onChange={(e) => setModel(e.target.value)} className="col-span-3" />
+                        <Input required id="model" value={model} onChange={(e) => setModel(e.target.value)} className="col-span-3" />
                         {modelInputError && <p className="col-span-4 text-red-500">{modelInputError}</p>}
                      </div>
                   </div>

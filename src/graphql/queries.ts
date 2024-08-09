@@ -44,6 +44,15 @@ export const DELETE_BRAND = gql`
 `;
 
 // MODELS
+export const GET_MODELS = gql`
+   query getModels($brand_id: String) {
+      models(where: { brand_id: { _eq: $brand_id } }) {
+         id
+         name
+      }
+   }
+`;
+
 export const MODELS_SUBSCRIPTION = gql`
    subscription modelSubscription {
       models {
@@ -82,6 +91,15 @@ export const DELETE_MODEL = gql`
 `;
 
 // CATEGORIES
+export const GET_CATEGORİES = gql`
+   query getCategories {
+      categories {
+         id
+         name
+      }
+   }
+`;
+
 export const ADD_CATEGORY_MUTATION = gql`
    mutation addCategory($id: String, $name: String) {
       insert_categories_one(object: { id: $id, name: $name }) {
@@ -110,6 +128,115 @@ export const UPDATE_CATEGORY_MUTATION = gql`
 export const DELETE_CATEGORY = gql`
    mutation deleteCategory($id: String!) {
       delete_categories_by_pk(id: $id) {
+         id
+      }
+   }
+`;
+
+//VEHICLES
+export const ADD_VEHICLE_MUTATION = gql`
+   mutation addVehicle(
+      $id: String
+      $brand_id: String
+      $model_id: String
+      $category_id: String
+      $fuel: String
+      $gear: String
+      $model_year: String
+      $plate: String
+      $daily_price: String
+      $image: String
+      $avaliable: Boolean
+      $description: String!
+   ) {
+      insert_vehicles_one(
+         object: {
+            id: $id
+            brand_id: $brand_id
+            model_id: $model_id
+            category_id: $category_id
+            fuel: $fuel
+            gear: $gear
+            model_year: $model_year
+            plate: $plate
+            daily_price: $daily_price
+            image: $image
+            avaliable: $avaliable
+            description: $description
+         }
+      ) {
+         id
+      }
+   }
+`;
+
+export const VEHICLE_SUBSCRIPTION = gql`
+   subscription getVehicles {
+      vehicles {
+         id
+         fuel
+         gear
+         model_year
+         daily_price
+         description
+         avaliable
+         image
+         plate
+         brand {
+            id
+            name
+         }
+         model {
+            id
+            name
+         }
+         category {
+            id
+            name
+         }
+      }
+   }
+`;
+
+export const UPDATE_VEHICLE_MUTATION = gql`
+   mutation updateVehicle(
+      $id: String!
+      $brand_id: String!
+      $model_id: String!
+      $category_id: String!
+      $fuel: String!
+      $gear: String!
+      $model_year: String!
+      $plate: String!
+      $daily_price: String!
+      $image: String!
+      $avaliable: Boolean!
+      $description: String!
+   ) {
+      update_vehicles_by_pk(
+         pk_columns: { id: $id }
+         _set: {
+            brand_id: $brand_id
+            model_id: $model_id
+            category_id: $category_id
+            fuel: $fuel
+            gear: $gear
+            model_year: $model_year
+            plate: $plate
+            daily_price: $daily_price
+            image: $image
+            avaliable: $avaliable
+            description: $description
+         }
+      ) {
+         id
+      }
+   }
+`;
+
+export const DELETE_VEHICLE = gql`
+   mutation deleteVehicle($id: String!) {
+      delete_vehicles_by_pk(id: $id) {
          id
       }
    }
