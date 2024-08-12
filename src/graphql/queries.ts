@@ -19,6 +19,20 @@ export const BRANDS_SUBSCRIPTIONS = gql`
    }
 `;
 
+export const BRANDS_COUNT_SUBS = gql`
+   subscription getBrandsCount {
+      brands {
+         id
+         name
+         vehicles_aggregate(order_by: { brand: { vehicles_aggregate: { count: desc } } }, where: { avaliable: { _eq: true } }) {
+            aggregate {
+               count
+            }
+         }
+      }
+   }
+`;
+
 export const ADD_BRAND_MUTATION = gql`
    mutation addBrand($id: String, $name: String) {
       insert_brands_one(object: { id: $id, name: $name }) {
@@ -56,6 +70,19 @@ export const GET_MODELS = gql`
 export const MODELS_SUBSCRIPTION = gql`
    subscription modelSubscription {
       models {
+         id
+         name
+         brand {
+            id
+            name
+         }
+      }
+   }
+`;
+
+export const MODELS_SUBSCRIPTION_BY_ID = gql`
+   subscription modelSubscription($brand_id: String) {
+      models(where: { brand_id: { _eq: $brand_id } }) {
          id
          name
          brand {
@@ -171,16 +198,19 @@ export const ADD_VEHICLE_MUTATION = gql`
 `;
 
 export const VEHICLE_SUBSCRIPTION = gql`
-   subscription getVehicles {
-      vehicles {
-         id
-         fuel
-         gear
-         model_year
+   subscription getVehicles($where: vehicles_bool_exp) {
+      vehicles(where: $where) {
+         avaliable
+         brand_id
+         category_id
          daily_price
          description
-         avaliable
+         fuel
+         gear
+         id
          image
+         model_id
+         model_year
          plate
          brand {
             id
@@ -199,29 +229,36 @@ export const VEHICLE_SUBSCRIPTION = gql`
 `;
 
 export const VEHICLES_BY_DATE_RANGE = gql`
-   subscription getVehiclesByDateRange($from: String!, $to: String!) {
-      vehicles(where: { _or: [{ reservations: { _not: { end_date: { _gte: $from } } } }, { reservations: { _not: { start_date: { _lte: $to } } } }] }) {
+   subscription VehiclesByDateRange($from: date, $to: date, $brand_id: String, $model_id: String, $fuel: String, $gear: String, $price_range_min: Int, $price_range_max: Int) {
+      vehicles(
+         where: {
+            _and: [
+               { available_from: { _lte: $from } }
+               { available_to: { _gte: $to } }
+               { brand_id: { _eq: $brand_id, _is_null: false } }
+               { model_id: { _eq: $model_id, _is_null: false } }
+               { fuel: { _eq: $fuel, _is_null: false } }
+               { gear: { _eq: $gear, _is_null: false } }
+               { daily_price: { _gte: $price_range_min, _lte: $price_range_max } }
+            ]
+         }
+      ) {
          id
-         fuel
-         gear
-         model_year
-         daily_price
-         description
-         avaliable
-         image
-         plate
+         name
          brand {
-            id
             name
          }
          model {
-            id
             name
          }
-         category {
-            id
-            name
-         }
+         fuel
+         gear
+         daily_price
+         model_year
+         description
+         image
+         available_from
+         available_to
       }
    }
 `;
@@ -265,6 +302,14 @@ export const UPDATE_VEHICLE_MUTATION = gql`
 export const DELETE_VEHICLE = gql`
    mutation deleteVehicle($id: String!) {
       delete_vehicles_by_pk(id: $id) {
+         id
+      }
+   }
+`;
+
+export const GET_VEHICLE_BY_ID = gql`
+   query getVehicleById($id: String!) {
+      vehicles(where: { id: { _eq: $id } }) {
          id
       }
    }

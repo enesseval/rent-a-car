@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import React, { useState } from "react";
 import { TiDelete } from "react-icons/ti";
 import { MdModeEdit } from "react-icons/md";
-import { useMutation, useQuery, useSubscription } from "@apollo/client";
+import { useMutation, useSubscription } from "@apollo/client";
 
 import Loading from "./Loading";
 import { cn } from "@/lib/utils";
@@ -27,7 +27,16 @@ import { Brand, Category, Model, Vehicle } from "@/types/graphqlTypes";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { ADD_VEHICLE_MUTATION, DELETE_VEHICLE, GET_BRANDS, GET_CATEGORİES, GET_MODELS, UPDATE_VEHICLE_MUTATION, VEHICLE_SUBSCRIPTION } from "@/graphql/queries";
+import {
+   ADD_VEHICLE_MUTATION,
+   BRANDS_SUBSCRIPTIONS,
+   CATEGORY_SUBSCRIPTION,
+   DELETE_VEHICLE,
+   MODELS_SUBSCRIPTION,
+   MODELS_SUBSCRIPTION_BY_ID,
+   UPDATE_VEHICLE_MUTATION,
+   VEHICLE_SUBSCRIPTION,
+} from "@/graphql/queries";
 
 const initialVehicleState: Vehicle = {
    id: "",
@@ -68,9 +77,9 @@ function Vehicles() {
    const [vehicle, setVehicle] = useState<Vehicle>(initialVehicleState);
 
    const { data, loading, error } = useSubscription(VEHICLE_SUBSCRIPTION);
-   const { data: brandData, loading: brandLoading, error: brandError } = useQuery(GET_BRANDS);
-   const { data: categoryData, loading: categoryLoading, error: categoryError } = useQuery(GET_CATEGORİES);
-   const { data: modelData, loading: modelLoading, error: modelError } = useQuery(GET_MODELS, { variables: { brand_id: brandId } });
+   const { data: brandData, loading: brandLoading, error: brandError } = useSubscription(BRANDS_SUBSCRIPTIONS);
+   const { data: categoryData, loading: categoryLoading, error: categoryError } = useSubscription(CATEGORY_SUBSCRIPTION);
+   const { data: modelData, loading: modelLoading, error: modelError } = useSubscription(MODELS_SUBSCRIPTION_BY_ID, { variables: { brand_id: brandId } });
    const [addVehicle] = useMutation(ADD_VEHICLE_MUTATION, {
       onCompleted: () => {
          toast({

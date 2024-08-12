@@ -1,37 +1,26 @@
 "use client";
-import Navbar from "@/components/Navbar";
-import { DateRangePicker } from "@/components/DateRangePicker";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { DateRange } from "react-day-picker";
+
 import { useState } from "react";
-import { useSubscription } from "@apollo/client";
-import { RESERVATIONS_COUNT } from "@/graphql/queries";
+import Navbar from "@/components/Navbar";
+import { DateRange } from "react-day-picker";
 import { useRouter } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
+import { DateRangePicker } from "@/components/DateRangePicker";
 
 export default function Home() {
    const router = useRouter();
    const [hasError, setHasError] = useState(false);
    const [date, setDate] = useState<DateRange | undefined>(undefined);
 
-   const { data: reservationCountData, loading: reservationCountLoading, error: reservationCountError } = useSubscription(RESERVATIONS_COUNT);
-
-   const handleDateChange = (date: DateRange | undefined) => {
-      setDate(date);
-   };
+   const handleDateChange = (date: DateRange | undefined) => setDate(date);
 
    const handleDateError = (error: boolean) => setHasError(error);
 
    const handleSubmit = () => {
-      if (!reservationCountError && !reservationCountLoading) {
-         if (reservationCountData.reservations_aggregate.aggregate.count === 0) {
-            router.push("/vehicles");
-         } else {
-            const from = date?.from ? date.from.toISOString().split("T")[0] : "";
-            const to = date?.to ? date.to.toISOString().split("T")[0] : "";
-            router.push(`/vehicles?from=${from}&to=${to}`);
-         }
-      }
+      const from = date?.from ? date.from.toISOString().split("T")[0] : "";
+      const to = date?.to ? date.to.toISOString().split("T")[0] : "";
+      router.push(`/vehicles?from=${from}&to=${to}`);
    };
 
    return (
@@ -39,8 +28,8 @@ export default function Home() {
          <Navbar />
          <div className="flex items-center justify-center mt-[200px] gap-2">
             <DateRangePicker onChange={handleDateChange} onError={handleDateError} />
-            <Button onClick={() => handleSubmit()} disabled={hasError || !date || reservationCountLoading} variant={"outline"}>
-               Araç Bul
+            <Button onClick={() => handleSubmit()} disabled={hasError || !date} variant={"outline"}>
+               {date ? "Araç Bul" : "Lütfen bir tarih seçiniz"}
             </Button>
          </div>
       </div>

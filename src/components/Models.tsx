@@ -25,7 +25,7 @@ import { Brand, Model } from "@/types/graphqlTypes";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { ADD_MODEL_MUTATION, BRANDS_SUBSCRIPTIONS, DELETE_MODEL, GET_BRANDS, MODELS_SUBSCRIPTION, UPDATE_MODEL_MUTATION } from "@/graphql/queries";
+import { ADD_MODEL_MUTATION, BRANDS_SUBSCRIPTIONS, DELETE_MODEL, MODELS_SUBSCRIPTION, UPDATE_MODEL_MUTATION } from "@/graphql/queries";
 
 function Models() {
    const { toast } = useToast();

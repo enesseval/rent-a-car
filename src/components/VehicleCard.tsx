@@ -5,14 +5,17 @@ import Loading from "./Loading";
 import { Button } from "./ui/button";
 import { GiGearStickPattern } from "react-icons/gi";
 import { BsFuelPumpFill } from "react-icons/bs";
+import { useRouter } from "next/navigation";
 
-interface VehicleCardProps {
-   vehicle: Vehicle;
-}
+function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
+   const router = useRouter();
 
-function VehicleCard({ vehicle }: VehicleCardProps) {
-   console.log(vehicle);
+   const handleSubmit = (id: string) => {
+      router.push(`/reservation/${id}`);
+   };
+
    if (!vehicle) return <Loading />;
+
    return (
       <Card className="relative overflow-hidden bg-contain bg-no-repeat" style={{ backgroundImage: `url(${vehicle.image})`, height: "300px" }}>
          <div className="absolute inset-0 bg-black bg-opacity-10"></div>
@@ -33,7 +36,7 @@ function VehicleCard({ vehicle }: VehicleCardProps) {
                </span>
                <h1 className="order-2 text-right">{vehicle.daily_price.toString()} ₺</h1>
                <div className="order-4 flex justify-end">
-                  <Button className="max-w-[100px]" variant={"outline"}>
+                  <Button className="max-w-[100px]" variant={"outline"} onClick={() => handleSubmit(vehicle.id)}>
                      Kirala
                   </Button>
                </div>
