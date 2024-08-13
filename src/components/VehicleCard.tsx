@@ -1,17 +1,23 @@
 import { Vehicle } from "@/types/graphqlTypes";
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import Loading from "./Loading";
 import { Button } from "./ui/button";
 import { GiGearStickPattern } from "react-icons/gi";
 import { BsFuelPumpFill } from "react-icons/bs";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FaSpinner } from "react-icons/fa";
 
 function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
    const router = useRouter();
+   const searchParams = useSearchParams();
+   const from = searchParams.get("from");
+   const to = searchParams.get("to");
+   const [submitLoading, setSubmitLoading] = useState(false);
 
    const handleSubmit = (id: string) => {
-      router.push(`/reservation/${id}`);
+      setSubmitLoading(true);
+      router.push(`/reservation/${id}?from=${from}&to=${to}`);
    };
 
    if (!vehicle) return <Loading />;
@@ -37,7 +43,7 @@ function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
                <h1 className="order-2 text-right">{vehicle.daily_price.toString()} ₺</h1>
                <div className="order-4 flex justify-end">
                   <Button className="max-w-[100px]" variant={"outline"} onClick={() => handleSubmit(vehicle.id)}>
-                     Kirala
+                     {submitLoading ? <FaSpinner className="animate-spin" /> : "Kirala"}
                   </Button>
                </div>
             </div>

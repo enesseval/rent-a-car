@@ -70,12 +70,18 @@ const config = {
                "0%": { transform: "rotate(0deg)" },
                "100%": { transform: "rotate(180deg)" },
             },
+            info: {
+               "0%": { scale: "1" },
+               "50%": { scale: "1.4" },
+               "100%": { scale: "1" },
+            },
          },
          animation: {
             "accordion-down": "accordion-down 0.2s ease-out",
             "accordion-up": "accordion-up 0.2s ease-out",
             wiggle: "wiggle 1s ease-in-out",
             turnToggle: "turnToggle 1s forward",
+            info: "info 3s infinite",
          },
       },
    },

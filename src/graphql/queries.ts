@@ -311,6 +311,16 @@ export const GET_VEHICLE_BY_ID = gql`
    query getVehicleById($id: String!) {
       vehicles(where: { id: { _eq: $id } }) {
          id
+         brand {
+            name
+         }
+         model {
+            name
+         }
+         fuel
+         gear
+         daily_price
+         image
       }
    }
 `;
@@ -322,6 +332,40 @@ export const RESERVATIONS_COUNT = gql`
          aggregate {
             count
          }
+      }
+   }
+`;
+
+export const ADD_RESERVATION_MUTATION = gql`
+   mutation addReservation(
+      $id: String
+      $vehicle_id: String
+      $start_date: date
+      $end_date: date
+      $total_price: money
+      $driver_name: String
+      $driver_tcno: String
+      $driver_mail: String
+      $driver_phone: String
+      $driver_birthday: String
+      $payment_status: Boolean
+   ) {
+      insert_reservations_one(
+         object: {
+            id: $id
+            vehicle_id: $vehicle_id
+            start_date: $start_date
+            end_date: $end_date
+            total_price: $total_price
+            driver_name: $driver_name
+            driver_tcno: $driver_tcno
+            driver_mail: $driver_mail
+            driver_phone: $driver_phone
+            driver_birthday: $driver_birthday
+            payment_status: $payment_status
+         }
+      ) {
+         id
       }
    }
 `;

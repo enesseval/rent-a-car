@@ -6,7 +6,7 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig = {
    images: {
-      domains: ["www.carlogos.org", "vl.imgix.net"],
+      domains: ["i.ibb.co", "vl.imgix.net"],
    },
 };
 
