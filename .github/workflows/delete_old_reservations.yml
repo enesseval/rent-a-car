@@ -2,8 +2,8 @@ name: Delete Old Reservations
 
 on:
    schedule:
-      # Her iki saatte bir çalışacak şekilde ayarlanmıştır
       - cron: "0 */2 * * *"
+   workflow_dispatch: # Manuel olarak çalıştırılabilir hale getirir
 
 jobs:
    delete-reservations:
