@@ -299,6 +299,22 @@ export const UPDATE_VEHICLE_MUTATION = gql`
    }
 `;
 
+export const UPDATE_VEHICLE_AVALIABLE_MUTATION = gql`
+   mutation updateAvaliable($id: String!) {
+      update_vehicles_by_pk(pk_columns: { id: $id }, _set: { avaliable: false }) {
+         id
+      }
+   }
+`;
+
+export const UPDATE_VEHICLE_COMMENT_MUTATION = gql`
+   mutation updateAvaliable($id: String!, $comment: String!) {
+      update_vehicles_by_pk(pk_columns: { id: $id }, _set: { comment: $comment }) {
+         id
+      }
+   }
+`;
+
 export const DELETE_VEHICLE = gql`
    mutation deleteVehicle($id: String!) {
       delete_vehicles_by_pk(id: $id) {
@@ -325,7 +341,7 @@ export const GET_VEHICLE_BY_ID = gql`
    }
 `;
 
-//RESERVAATIONS
+//RESERVATIONS
 export const RESERVATIONS_COUNT = gql`
    subscription reservationCount {
       reservations_aggregate {
@@ -365,6 +381,41 @@ export const ADD_RESERVATION_MUTATION = gql`
             payment_status: $payment_status
          }
       ) {
+         id
+      }
+   }
+`;
+
+export const GET_RESERVATION_SUBSCRIPTION = gql`
+   subscription getReservation($id: String) {
+      reservations(where: { id: { _eq: $id } }) {
+         id
+         created_at
+         driver_birthday
+         driver_mail
+         driver_name
+         driver_phone
+         driver_tcno
+         end_date
+         payment_status
+         start_date
+         total_price
+         vehicle_id
+         vehicle {
+            brand {
+               name
+            }
+            model {
+               name
+            }
+         }
+      }
+   }
+`;
+
+export const UPDATE_RESERVATION_PAYMENT_STATUS = gql`
+   mutation updatePaymentStatus($id: String!) {
+      update_reservations_by_pk(pk_columns: { id: $id }, _set: { payment_status: true }) {
          id
       }
    }

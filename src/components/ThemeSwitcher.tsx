@@ -1,9 +1,10 @@
 "use client";
 import { useTheme } from "next-themes";
-import React, { useEffect, useState } from "react";
-import { Button } from "./ui/button";
 import { IoMoon } from "react-icons/io5";
 import { PiSunFill } from "react-icons/pi";
+import React, { useEffect, useState } from "react";
+
+import { Button } from "./ui/button";
 
 function ThemeSwitcher() {
    const [mounted, setMounted] = useState(false);

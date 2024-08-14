@@ -1,12 +1,13 @@
-import { Vehicle } from "@/types/graphqlTypes";
 import React, { useState } from "react";
-import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { FaSpinner } from "react-icons/fa";
+import { BsFuelPumpFill } from "react-icons/bs";
+import { GiGearStickPattern } from "react-icons/gi";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import Loading from "./Loading";
 import { Button } from "./ui/button";
-import { GiGearStickPattern } from "react-icons/gi";
-import { BsFuelPumpFill } from "react-icons/bs";
-import { useRouter, useSearchParams } from "next/navigation";
-import { FaSpinner } from "react-icons/fa";
+import { Vehicle } from "@/types/graphqlTypes";
+import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
 
 function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
    const router = useRouter();

@@ -121,7 +121,7 @@ function VehiclesLeftSideBar({ onFilter }: any) {
                                  sortedBrandData &&
                                  sortedBrandData.map((brand: BrandCount) => (
                                     <SelectItem value={brand.id} key={brand.id}>
-                                       {brand.name} ({brand.vehicles_aggregate.aggregate.count})
+                                       {brand.name}
                                     </SelectItem>
                                  ))}
                            </SelectGroup>

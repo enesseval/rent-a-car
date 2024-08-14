@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { ADD_RESERVATION_MUTATION, GET_VEHICLE_BY_ID } from "@/graphql/queries";
+import { ADD_RESERVATION_MUTATION, GET_VEHICLE_BY_ID, UPDATE_VEHICLE_AVALIABLE_MUTATION } from "@/graphql/queries";
 import { Separator } from "@/components/ui/separator";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
@@ -79,13 +79,19 @@ function Reservation() {
    if (to) dateTo = new Date(to);
 
    const { data, loading, error } = useQuery(GET_VEHICLE_BY_ID, { variables: { id } });
+   const [updateVehicleAvaliable] = useMutation(UPDATE_VEHICLE_AVALIABLE_MUTATION, {
+      variables: { id },
+      onError: (error) => {
+         console.log(error.message);
+      },
+   });
    const [addReservation] = useMutation(ADD_RESERVATION_MUTATION, {
       onCompleted: (data) => {
          toast({
             title: "Reservasyon başarıyla eklendi",
          });
-         console.log(data);
-         router.push(`/reservations/${data.insert_reservations_one.id}`);
+         updateVehicleAvaliable({ variables: { id } });
+         router.push(`/reservation/detail/${data.insert_reservations_one.id}`);
       },
       onError: (error) => {
          toast({

@@ -1,14 +1,15 @@
 import React from "react";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { Button } from "./ui/button";
-import { cn } from "@/lib/utils";
-import ThemeSwitcher from "./ThemeSwitcher";
 import { signOut } from "firebase/auth";
-import { auth } from "@/services/firebaseConfig";
-import { useRouter } from "next/navigation";
-import { Separator } from "./ui/separator";
-import { GoDotFill } from "react-icons/go";
 import { CiLogout } from "react-icons/ci";
+import { GoDotFill } from "react-icons/go";
+import { useRouter } from "next/navigation";
+import { auth } from "@/services/firebaseConfig";
+
+import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
+import { Separator } from "./ui/separator";
+import ThemeSwitcher from "./ThemeSwitcher";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface Props {
    isOpen: boolean;
