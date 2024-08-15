@@ -32,12 +32,12 @@ function Cars() {
    const createQuery = (filters: Filters | undefined, from: string, to: string) => {
       const filterConditions: {
          where: {
-            avaliable: { _eq: true };
+            available: { _eq: true };
             _not: { reservations: { _and: { end_date: { _gte?: string }; start_date: { _lte?: string } } } };
             _or: { brand_id?: { _eq?: string }; model_id?: { _eq?: string }; fuel?: { _eq?: string }; gear?: { _eq?: string }; daily_price?: string };
          };
       } = {
-         where: { avaliable: { _eq: true }, _not: { reservations: { _and: { end_date: { _gte: from }, start_date: { _lte: to } } } }, _or: {} },
+         where: { available: { _eq: true }, _not: { reservations: { _and: { end_date: { _gte: from }, start_date: { _lte: to } } } }, _or: {} },
       };
 
       if (filters?.brand_id) filterConditions.where._or.brand_id = { _eq: filters.brand_id };

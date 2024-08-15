@@ -24,7 +24,7 @@ export const BRANDS_COUNT_SUBS = gql`
       brands {
          id
          name
-         vehicles_aggregate(order_by: { brand: { vehicles_aggregate: { count: desc } } }, where: { avaliable: { _eq: true } }) {
+         vehicles_aggregate(order_by: { brand: { vehicles_aggregate: { count: desc } } }, where: { available: { _eq: true } }) {
             aggregate {
                count
             }
@@ -173,7 +173,7 @@ export const ADD_VEHICLE_MUTATION = gql`
       $plate: String
       $daily_price: String
       $image: String
-      $avaliable: Boolean
+      $available: Boolean
       $description: String!
    ) {
       insert_vehicles_one(
@@ -188,7 +188,7 @@ export const ADD_VEHICLE_MUTATION = gql`
             plate: $plate
             daily_price: $daily_price
             image: $image
-            avaliable: $avaliable
+            available: $available
             description: $description
          }
       ) {
@@ -200,7 +200,7 @@ export const ADD_VEHICLE_MUTATION = gql`
 export const VEHICLE_SUBSCRIPTION = gql`
    subscription getVehicles($where: vehicles_bool_exp) {
       vehicles(where: $where) {
-         avaliable
+         available
          brand_id
          category_id
          daily_price
@@ -275,7 +275,7 @@ export const UPDATE_VEHICLE_MUTATION = gql`
       $plate: String!
       $daily_price: String!
       $image: String!
-      $avaliable: Boolean!
+      $available: Boolean!
       $description: String!
    ) {
       update_vehicles_by_pk(
@@ -290,7 +290,7 @@ export const UPDATE_VEHICLE_MUTATION = gql`
             plate: $plate
             daily_price: $daily_price
             image: $image
-            avaliable: $avaliable
+            available: $available
             description: $description
          }
       ) {
@@ -299,9 +299,9 @@ export const UPDATE_VEHICLE_MUTATION = gql`
    }
 `;
 
-export const UPDATE_VEHICLE_AVALIABLE_MUTATION = gql`
-   mutation updateAvaliable($id: String!) {
-      update_vehicles_by_pk(pk_columns: { id: $id }, _set: { avaliable: false }) {
+export const UPDATE_VEHICLE_AVAILABLE_MUTATION = gql`
+   mutation updateAvailable($id: String!) {
+      update_vehicles_by_pk(pk_columns: { id: $id }, _set: { available: false }) {
          id
       }
    }
@@ -329,6 +329,26 @@ export const GET_VEHICLE_BY_ID = gql`
          gear
          daily_price
          image
+      }
+   }
+`;
+
+export const GET_AVAILABLE_VEHICLE_COUNT = gql`
+   subscription getAvailableVehicle {
+      vehicles_aggregate(where: { available: { _eq: true } }) {
+         aggregate {
+            count
+         }
+      }
+   }
+`;
+
+export const GET_NOT_AVAILABLE_VEHICLE_COUNT = gql`
+   subscription getAvailableVehicle {
+      vehicles_aggregate(where: { available: { _eq: false } }) {
+         aggregate {
+            count
+         }
       }
    }
 `;
@@ -437,6 +457,15 @@ export const UPDATE_RESERVATION_PAYMENT_STATUS = gql`
    mutation updatePaymentStatus($id: String!) {
       update_reservations_by_pk(pk_columns: { id: $id }, _set: { payment_status: true }) {
          id
+      }
+   }
+`;
+
+export const RESERVATIONS_TOTAL_PRICES_SUBSCRIPTION = gql`
+   subscription reservationTotalPrices {
+      reservations {
+         total_price
+         created_at
       }
    }
 `;

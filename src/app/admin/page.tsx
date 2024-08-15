@@ -12,6 +12,7 @@ import { auth } from "@/services/firebaseConfig";
 import Categories from "@/components/Categories";
 import AdminPageSideBar from "@/components/AdminPageSideBar";
 import Reservations from "@/components/Reservations";
+import Dashboard from "@/components/Deashboard";
 
 const AdminPage: React.FC = () => {
    const router = useRouter();
@@ -32,7 +33,7 @@ const AdminPage: React.FC = () => {
    const renderContent = () => {
       switch (activeTab) {
          case "dashboard":
-            return <div>Dashboard</div>;
+            return <Dashboard />;
          case "brands":
             return <Brands />;
          case "models":

@@ -2,20 +2,21 @@
 
 import Image from "next/image";
 import { format } from "date-fns";
+import { DatePicker } from "antd";
 import { tr } from "date-fns/locale";
-import { useMutation, useQuery } from "@apollo/client";
+import { ImSpinner8 } from "react-icons/im";
 import { BsInfoCircle } from "react-icons/bs";
 import { FaChild, FaCheck } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { TbBabyCarriageFilled } from "react-icons/tb";
+import { useMutation, useQuery } from "@apollo/client";
 import { IoSpeedometer, IoCarSport } from "react-icons/io5";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { GiGearStickPattern, GiWallet } from "react-icons/gi";
 import { BsFuelPumpFill, BsPersonCheckFill, BsPersonPlusFill, BsPersonFill } from "react-icons/bs";
 
 import { nanoid } from "nanoid";
-import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
 import { Label } from "@/components/ui/label";
@@ -23,12 +24,10 @@ import { Input } from "@/components/ui/input";
 import { Vehicle } from "@/types/graphqlTypes";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "@radix-ui/react-icons";
-import { ADD_RESERVATION_MUTATION, GET_VEHICLE_BY_ID, UPDATE_VEHICLE_AVALIABLE_MUTATION } from "@/graphql/queries";
 import { Separator } from "@/components/ui/separator";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ImSpinner8 } from "react-icons/im";
+
+import { ADD_RESERVATION_MUTATION, GET_VEHICLE_BY_ID, UPDATE_VEHICLE_AVAILABLE_MUTATION } from "@/graphql/queries";
+import dayjs from "dayjs";
 
 type ServiceKeys = "driver" | "babySeat" | "childSeat";
 
@@ -81,7 +80,7 @@ function Reservation() {
    if (to) dateTo = new Date(to);
 
    const { data, loading, error } = useQuery(GET_VEHICLE_BY_ID, { variables: { id } });
-   const [updateVehicleAvaliable] = useMutation(UPDATE_VEHICLE_AVALIABLE_MUTATION, {
+   const [updateVehicleAvailable] = useMutation(UPDATE_VEHICLE_AVAILABLE_MUTATION, {
       variables: { id },
       onError: (error) => {
          console.log(error.message);
@@ -92,7 +91,7 @@ function Reservation() {
          toast({
             title: "Reservasyon başarıyla eklendi",
          });
-         updateVehicleAvaliable({ variables: { id } });
+         updateVehicleAvailable({ variables: { id } });
          router.push(`/reservation/detail/${data.insert_reservations_one.id}`);
       },
       onError: (error) => {
@@ -174,6 +173,7 @@ function Reservation() {
 
    if (loading) return <Loading />;
 
+   console.log(birthday);
    return (
       <div>
          <Navbar />
@@ -382,7 +382,17 @@ function Reservation() {
                            <Label htmlFor="birthday" className="block">
                               Doğum Tarihi
                            </Label>
-                           <Popover>
+                           <DatePicker
+                              value={birthday}
+                              onChange={(val) => setBirthday(val)}
+                              className="w-full bg-background"
+                              disabledDate={(date) => {
+                                 const today = new Date();
+                                 const minSelecte = new Date(today.getFullYear() - 21, today.getMonth(), today.getDate());
+                                 return date.isAfter(minSelecte); // Date türünde karşılaştırma
+                              }}
+                           />
+                           {/* <Popover>
                               <PopoverTrigger id="birthday" asChild>
                                  <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !setBirthday && "text-muted-foreground", errors.birthday && "border-red-500")}>
                                     <CalendarIcon className="mr-2 h-4 w-4" />
@@ -392,7 +402,7 @@ function Reservation() {
                               <PopoverContent className="w-auto p-0" align="start">
                                  <Calendar mode="single" selected={birthday} onSelect={setBirthday} initialFocus />
                               </PopoverContent>
-                           </Popover>
+                           </Popover> */}
                         </div>
                         <div className="col-span-2 sm:col-span-1 space-y-2">
                            <Label htmlFor="e_mail">E-posta</Label>

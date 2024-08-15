@@ -146,7 +146,7 @@ function Vehicles() {
    };
 
    const handleRadioChange = (value: string) => {
-      setVehicle((prevVehicle) => ({ ...prevVehicle, avaliable: value === "true" }));
+      setVehicle((prevVehicle) => ({ ...prevVehicle, available: value === "true" }));
    };
 
    //blur ve focus fonksiyonları input içini boşaltmaya ve doldurmaya yarıyor çünkü 0 solda kalıp değeri bozuyor.

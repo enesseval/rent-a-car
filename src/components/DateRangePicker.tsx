@@ -63,8 +63,8 @@ export function DateRangePicker({ className, onChange, onError }: DateRangePicke
             <PopoverContent className="w-auto p-0" align="start">
                <Calendar
                   locale={tr}
-                  initialFocus
                   mode="range"
+                  initialFocus
                   defaultMonth={date?.from}
                   selected={date}
                   onSelect={handleDateChange}
