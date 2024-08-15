@@ -39,7 +39,7 @@ export interface Vehicle {
    plate: string;
    daily_price: Number;
    image: string;
-   avaliable: boolean;
+   available: boolean;
    description: string!;
    brand: Brand;
    model: Model;

@@ -49,7 +49,7 @@ const initialVehicleState: Vehicle = {
    plate: "",
    daily_price: 0,
    image: "",
-   avaliable: true,
+   available: true,
    description: "",
    brand: {
       id: "",
@@ -239,7 +239,7 @@ function Vehicles() {
          plate: vehicle.plate,
          daily_price: vehicle.daily_price,
          image: vehicle.image,
-         avaliable: vehicle.avaliable,
+         available: vehicle.available,
          description: vehicle.description,
          brand: vehicle.brand,
          model: vehicle.model,
@@ -435,7 +435,7 @@ function Vehicles() {
                         <Label htmlFor="plate" className="text-right">
                            Müsaitlik
                         </Label>
-                        <RadioGroup className={cn("flex flex-row col-span-3", errors.plate && "text-red-500")} value={vehicle.avaliable.toString()} onValueChange={handleRadioChange}>
+                        <RadioGroup className={cn("flex flex-row col-span-3", errors.plate && "text-red-500")} value={vehicle.available.toString()} onValueChange={handleRadioChange}>
                            <div className="flex space-x-2">
                               <RadioGroupItem value="true" id="true" />
                               <Label htmlFor="true">Müsait</Label>
