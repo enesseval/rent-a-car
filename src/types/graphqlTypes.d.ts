@@ -58,3 +58,20 @@ export interface Filters {
 export interface VehiclesLeftSideBarProps {
    onFilter: (filters: Filters) => void;
 }
+
+export interface Reservation {
+   id: string;
+   vehicle_id: string;
+   start_date: string;
+   end_date: string;
+   created_at: string;
+   total_price: string;
+   payment_status: boolean;
+   driver_name: string;
+   driver_mail: string;
+   driver_phone: string;
+   driver_tcno: string;
+   driver_birthday: string;
+   status: string;
+   vehicle: Vehicle;
+}

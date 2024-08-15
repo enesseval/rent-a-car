@@ -307,14 +307,6 @@ export const UPDATE_VEHICLE_AVALIABLE_MUTATION = gql`
    }
 `;
 
-export const UPDATE_VEHICLE_COMMENT_MUTATION = gql`
-   mutation updateAvaliable($id: String!, $comment: String!) {
-      update_vehicles_by_pk(pk_columns: { id: $id }, _set: { comment: $comment }) {
-         id
-      }
-   }
-`;
-
 export const DELETE_VEHICLE = gql`
    mutation deleteVehicle($id: String!) {
       delete_vehicles_by_pk(id: $id) {
@@ -382,6 +374,34 @@ export const ADD_RESERVATION_MUTATION = gql`
          }
       ) {
          id
+      }
+   }
+`;
+
+export const GET_RESERVATIONS_SUBSCRIPTION = gql`
+   subscription getReservations {
+      reservations {
+         id
+         vehicle_id
+         total_price
+         start_date
+         payment_status
+         end_date
+         driver_tcno
+         created_at
+         driver_birthday
+         driver_mail
+         driver_name
+         driver_phone
+         status
+         vehicle {
+            brand {
+               name
+            }
+            model {
+               name
+            }
+         }
       }
    }
 `;

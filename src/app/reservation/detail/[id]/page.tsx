@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useParams } from "next/navigation";
-import { useMutation, useSubscription } from "@apollo/client";
+import { useSubscription } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { Appearance, loadStripe } from "@stripe/stripe-js";
@@ -10,13 +10,12 @@ import { Appearance, loadStripe } from "@stripe/stripe-js";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
 import NotFound from "@/components/NotFound";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import CheckoutForm from "@/components/CheckoutForm";
 import { GET_RESERVATION_SUBSCRIPTION } from "@/graphql/queries";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 
 const stripeKey = loadStripe("pk_test_51PnhdxP3acpnUkztYb9EVNvNJtWdj5pLUSl6GiNZ7RyLs2og1YempBGMPPqAOCAH4SUJFPByjqXtWBnBQO8y5xAK00gAJHY5hV");
 
@@ -128,9 +127,7 @@ function ReservationDetail() {
          {new Date(data.reservations[0].end_date).getTime() - new Date().getTime() < 0 && (
             <div className="flex flex-col justify-center max-w-[300px] mx-auto mt-10 space-y-5">
                <Textarea onChange={(e) => setComment(e.target.value)} value={comment} />
-               <Button variant={"outline"} onClick={() => updateComment({ variables: { id, comment } })}>
-                  Gönder
-               </Button>
+               <Button variant={"outline"}>Gönder</Button>
             </div>
          )}
       </div>

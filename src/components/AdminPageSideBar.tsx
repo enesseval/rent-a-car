@@ -29,7 +29,7 @@ const AdminPageSideBar: React.FC<Props> = ({ isOpen, toggleSidebar, setActiveTab
    };
 
    return (
-      <nav className={cn("fixed top-0 left-0 h-full w-[250px] bg-slate-100 dark:bg-slate-900 duration-500", !isOpen && "w-6")}>
+      <nav className={cn("fixed top-0 left-0 h-full w-[250px] bg-slate-100 dark:bg-slate-900 duration-500 z-50", !isOpen && "w-6")}>
          <header className="relative max-h-[96px]">
             <div className="p-5 flex justify-center">
                <span className={cn("text-xl font-bold text-center delay-300", !isOpen && "invisible delay-0")}>
@@ -72,11 +72,7 @@ const AdminPageSideBar: React.FC<Props> = ({ isOpen, toggleSidebar, setActiveTab
                </li>
                <li onClick={() => setActiveTab("reservations")} className="hover:text-slate-600 cursor-pointer inline-flex items-center">
                   <GoDotFill className="mr-2" />
-                  Reservations
-               </li>
-               <li onClick={() => setActiveTab("payments")} className="hover:text-slate-600 cursor-pointer inline-flex items-center">
-                  <GoDotFill className="mr-2" />
-                  Payments
+                  Reservasyonlar
                </li>
             </ul>
          </div>

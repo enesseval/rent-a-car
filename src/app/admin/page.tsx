@@ -11,6 +11,7 @@ import Vehicles from "@/components/Vehicles";
 import { auth } from "@/services/firebaseConfig";
 import Categories from "@/components/Categories";
 import AdminPageSideBar from "@/components/AdminPageSideBar";
+import Reservations from "@/components/Reservations";
 
 const AdminPage: React.FC = () => {
    const router = useRouter();
@@ -41,9 +42,7 @@ const AdminPage: React.FC = () => {
          case "vehicles":
             return <Vehicles />;
          case "reservations":
-            return <div>reservations</div>;
-         case "payments":
-            return <div>payments</div>;
+            return <Reservations />;
       }
    };
 

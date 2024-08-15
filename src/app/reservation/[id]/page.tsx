@@ -28,6 +28,7 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { ADD_RESERVATION_MUTATION, GET_VEHICLE_BY_ID, UPDATE_VEHICLE_AVALIABLE_MUTATION } from "@/graphql/queries";
 import { Separator } from "@/components/ui/separator";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ImSpinner8 } from "react-icons/im";
 
 type ServiceKeys = "driver" | "babySeat" | "childSeat";
 
@@ -45,6 +46,7 @@ function Reservation() {
    const [name, setName] = useState("");
    const [email, setEmail] = useState("");
    const [vehicle, setVehicle] = useState<Vehicle>();
+   const [payLoading, setPayLoading] = useState(false);
    const [totalPrice, setTotalPrice] = useState<number>(0);
    const [birthday, setBirthday] = useState<Date>();
    const [selectedServices, setSelectedServices] = useState<Record<ServiceKeys, boolean>>({
@@ -143,6 +145,7 @@ function Reservation() {
    };
 
    const handlePaymentClick = () => {
+      setPayLoading(true);
       const newErrors = {
          name: !name.trim(),
          email: !email.trim(),
@@ -266,8 +269,14 @@ function Reservation() {
                            <div className="w-full mt-3 md:mt-0 space-y-3 md:space-y-0 flex flex-col justify-center md:flex-row md:items-center md:space-x-3">
                               <p>Toplam tutar: {totalPrice}₺</p>
                               <Button onClick={handlePaymentClick} variant={"outline"}>
-                                 Ödemeye geç
-                                 <MdKeyboardArrowRight className="text-green-700 w-7 h-7" />
+                                 {payLoading ? (
+                                    <ImSpinner8 className="w-6 h-6 animate-spin" />
+                                 ) : (
+                                    <>
+                                       Ödemeye geç
+                                       <MdKeyboardArrowRight className="text-green-700 w-7 h-7" />
+                                    </>
+                                 )}
                               </Button>
                            </div>
                         </div>
