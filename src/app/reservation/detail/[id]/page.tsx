@@ -109,6 +109,10 @@ function ReservationDetail() {
                   </AccordionItem>
                </Accordion>
             </div>
+            <div className="w-full justify-center text-muted-foreground mt-5">
+               <p className="text-center">deneme kart numarası: 4242 4242 4242 4242</p>
+               <p className="text-center">tarih: 09/29 CVC: 123</p>
+            </div>
             {data && !data.reservations[0].payment_status && (
                <div>
                   {clientSecret && (
@@ -119,11 +123,6 @@ function ReservationDetail() {
                </div>
             )}
          </div>
-         {data && data.reservations[0].payment_status && (
-            <div className="flex justify-center mt-10">
-               <p>Kiralama süreciniz sonrası bu sayfayı tekrar ziyaret ederek deneyiminizi bizimle paylaşabilirsiniz.</p>
-            </div>
-         )}
          {new Date(data.reservations[0].end_date).getTime() - new Date().getTime() < 0 && (
             <div className="flex flex-col justify-center max-w-[300px] mx-auto mt-10 space-y-5">
                <Textarea onChange={(e) => setComment(e.target.value)} value={comment} />

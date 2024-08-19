@@ -48,7 +48,7 @@ function AdminLogin() {
    return (
       <Form {...form}>
          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="w-full h-svh flex items-center justify-center">
+            <div className="w-full h-svh flex flex-col items-center justify-center">
                <div className="border rounded-lg">
                   <Card className="w-[350px]">
                      <CardHeader>
@@ -94,6 +94,10 @@ function AdminLogin() {
                         </Button>
                      </CardFooter>
                   </Card>
+               </div>
+               <div>
+                  <p className="text-muted-foreground text-center">email: test@test.com</p>
+                  <p className="text-muted-foreground text-center">şifre: 123456</p>
                </div>
             </div>
          </form>

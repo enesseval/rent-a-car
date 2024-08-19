@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { browserSessionPersistence, getAuth, setPersistence } from "firebase/auth";
 
 const firebaseConfig = {
-   apiKey: "AIzaSyDQtxV7_XXdcVgYiqYoYss6uCudWGKQiR4",
-   authDomain: "rent-a-car-13711.firebaseapp.com",
-   projectId: "rent-a-car-13711",
-   storageBucket: "rent-a-car-13711.appspot.com",
-   messagingSenderId: "331548338027",
-   appId: "1:331548338027:web:6c54ef9fb4cc00fb784e2e",
+   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);

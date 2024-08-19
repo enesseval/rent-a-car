@@ -27,7 +27,6 @@ import { toast } from "@/components/ui/use-toast";
 import { Separator } from "@/components/ui/separator";
 
 import { ADD_RESERVATION_MUTATION, GET_VEHICLE_BY_ID, UPDATE_VEHICLE_AVAILABLE_MUTATION } from "@/graphql/queries";
-import dayjs from "dayjs";
 
 type ServiceKeys = "driver" | "babySeat" | "childSeat";
 
@@ -173,7 +172,6 @@ function Reservation() {
 
    if (loading) return <Loading />;
 
-   console.log(birthday);
    return (
       <div>
          <Navbar />
