@@ -463,7 +463,7 @@ export const UPDATE_RESERVATION_PAYMENT_STATUS = gql`
 
 export const RESERVATIONS_TOTAL_PRICES_SUBSCRIPTION = gql`
    subscription reservationTotalPrices {
-      reservations {
+      reservations(where: { payment_status: { _eq: true } }) {
          total_price
          created_at
       }

@@ -61,8 +61,6 @@ function Dashboard() {
       });
    }
 
-   console.log(avaliableVehicles);
-
    if (avaliableVehiclesLoading || dontAvailableVehiclesLoading || reservationsTotalPricesLoading) return <Loading />;
 
    return (

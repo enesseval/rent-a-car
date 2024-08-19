@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Araba kiralama sitesi
 
-## Getting Started
+Veritabanında bulunan araçlar içinden kiralama yapılabilen bir çalışma.
 
-First, run the development server:
+Anasayfada bulunan date picker sayesinde belirli tarih aralığı seçildikten sonra araçların listelendiği bir sayfaya ulaşılmaktadır.Burada ise araçları marka model gibi özelliklerine göre filtreleyebildiğiniz bir alan bulunmaktadır.Herhangi bir aracı seçtikten sonra gelen sayfada ek hizmetlerin de seçilebileceği bir alan mevcuttur.Kullanıcı bilgilerini doldurduktan sonra ödeme adımına geçilip işlem tamamlanmaktadır. /admin rootunda ise kendi geliştirmiş olduğumu dashboard sayfası mevcut bu sayfa üzerinden marka model gibi özellikler eklenebiliyor, anlık araç durumu alınan ödemeler gibi bilgiler görüntülenebiliyor.
+
+#Kullanılan teknolojiler
+
+-  Nextjs, TailwindCSS, Shadcn-ui
+-  Firebase, Clerk
+-  Stripe
+
+## Bilgisayarınızda Çalıştırın
+
+Projeyi klonlayın
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  git clone https://github.com/enesseval/rent-a-car
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Proje dizinine gidin
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+  cd rent-a-car
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Gerekli paketleri yükleyin
 
-## Learn More
+```bash
+  npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+env.local dosyasına gerekli keyleri verin
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Sunucuyu çalıştırın
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+  npm run start
+```
 
-## Deploy on Vercel
+## Ekran Görüntüleri
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![Uygulama Ekran Görüntüsü](https://github.com/user-attachments/assets/b3103555-588f-48e1-aaa9-037da7ac493c)
+![](https://github.com/user-attachments/assets/cdd13c7c-0305-4a5d-a5a7-291d44ccd793)
+![](https://github.com/user-attachments/assets/86c8ff41-bb6d-4537-aa2d-8feab252af4b)
+![](https://github.com/user-attachments/assets/fa6be432-1b33-4b8e-948d-ebfdb45665ff)
+![](https://github.com/user-attachments/assets/451a30ed-a45b-484d-a12d-b4bf067fe998)
